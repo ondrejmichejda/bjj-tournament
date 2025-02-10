@@ -13,13 +13,12 @@ import {CompetitorService} from '../../api/competitor.service';
 })
 export class NewCompetitorFormComponent {
 
-    private competitorSvc = inject(CompetitorService);
-
     formGroup = new FormGroup({
         name: new FormControl(),
         weight: new FormControl(),
         belt: new FormControl()
     });
+    private competitorSvc = inject(CompetitorService);
 
     onSubmit() {
         const competitor = new Competitor(

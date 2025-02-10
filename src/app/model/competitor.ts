@@ -1,6 +1,6 @@
 import {Storable} from '../interface/storable';
 
-export class Competitor implements Storable<Competitor>{
+export class Competitor implements Storable<Competitor> {
 
     id?: number;
 
