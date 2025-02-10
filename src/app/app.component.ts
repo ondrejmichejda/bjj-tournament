@@ -4,7 +4,6 @@ import {CompetitorsListComponent} from './component/competitors-list/competitors
 
 @Component({
     selector: 'app-root',
-    standalone: true,
     templateUrl: './app.component.html',
     imports: [
         NewCompetitorFormComponent,

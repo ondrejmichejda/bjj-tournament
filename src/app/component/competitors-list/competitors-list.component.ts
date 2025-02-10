@@ -4,7 +4,6 @@ import {AsyncPipe} from '@angular/common';
 
 @Component({
     selector: 'app-competitors-list',
-    standalone: true,
     imports: [
         AsyncPipe
     ],

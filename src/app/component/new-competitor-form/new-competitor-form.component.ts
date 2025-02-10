@@ -5,7 +5,6 @@ import {CompetitorService} from '../../api/competitor.service';
 
 @Component({
     selector: 'app-new-competitor-form',
-    standalone: true,
     imports: [
         ReactiveFormsModule
     ],
