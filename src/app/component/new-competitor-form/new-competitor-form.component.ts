@@ -4,20 +4,20 @@ import {Competitor} from '../../model/competitor';
 import {CompetitorService} from '../../api/competitor.service';
 
 @Component({
-    selector: 'app-new-competitor-form',
-    imports: [
-        ReactiveFormsModule
-    ],
-    templateUrl: './new-competitor-form.component.html',
-    styleUrl: './new-competitor-form.component.scss'
-})
+               selector: 'app-new-competitor-form',
+               imports: [
+                   ReactiveFormsModule
+               ],
+               templateUrl: './new-competitor-form.component.html',
+               styleUrl: './new-competitor-form.component.scss'
+           })
 export class NewCompetitorFormComponent {
 
     formGroup = new FormGroup({
-        name: new FormControl(),
-        weight: new FormControl(),
-        belt: new FormControl()
-    });
+                                  name: new FormControl(),
+                                  weight: new FormControl(),
+                                  belt: new FormControl()
+                              });
     private competitorSvc = inject(CompetitorService);
 
     onSubmit() {

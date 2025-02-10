@@ -3,8 +3,8 @@ import {Competitor} from '../model/competitor';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
-})
+                providedIn: 'root'
+            })
 export class CompetitorService {
 
     competitors = new BehaviorSubject<Competitor[]>([]);
