@@ -1,0 +1,13 @@
+<div class="wrapper"
+     [formGroup]="formGroup">
+    <input type="text"
+           formControlName="name"
+           placeholder="Jmeno" />
+    <input type="number"
+           formControlName="weight"
+           placeholder="Vaha" />
+    <input type="text"
+           formControlName="belt"
+           placeholder="Pasek" />
+    <button (click)="onSubmit()">Vytvorit</button>
+</div>
