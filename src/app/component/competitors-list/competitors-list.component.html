@@ -1,7 +1,0 @@
-<h2>Zavodnici:</h2>
-<div class="wrapper">
-    @for (competitor of competitorSvc.competitors | async; track competitor.id) {
-        <button (click)="delete(competitor.id)">Smazat</button>
-        <div>{{ competitor.id }}|{{ competitor.name }}|{{ competitor.weight }}kg|{{ competitor.belt }}</div>
-    }
-</div>
