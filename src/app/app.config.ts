@@ -17,12 +17,12 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideAnimationsAsync(),
         provideFirebaseApp(() => initializeApp({
-            "projectId": `${environment.firestore.projectId}`,
-            "appId": `${environment.firestore.appId}`,
-            "storageBucket": `${environment.firestore.storageBucket}`,
-            "apiKey": `${environment.firestore.apiKey}`,
-            "authDomain": `${environment.firestore.authDomain}`,
-            "messagingSenderId": `${environment.firestore.messagingSenderId}`,
+            'projectId': `${environment.firestore.projectId}`,
+            'appId': `${environment.firestore.appId}`,
+            'storageBucket': `${environment.firestore.storageBucket}`,
+            'apiKey': `${environment.firestore.apiKey}`,
+            'authDomain': `${environment.firestore.authDomain}`,
+            'messagingSenderId': `${environment.firestore.messagingSenderId}`,
         })),
         provideFirestore(() => getFirestore()),
         provideStore({

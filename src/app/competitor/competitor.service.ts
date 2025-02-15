@@ -1,6 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Competitor} from './competitor';
+import {inject, Injectable} from '@angular/core';
+import {BeltColor, Competitor, CompetitorCreateRequest} from './competitor';
 import {Observable, of, throwError} from 'rxjs';
+import {Store} from "@ngrx/store";
+import {loadCompetitors} from "../state/competitor/competitor.actions";
 
 @Injectable({
     providedIn: 'root'
@@ -8,8 +10,15 @@ import {Observable, of, throwError} from 'rxjs';
 export class CompetitorService {
 
     competitors: Competitor[] = [];
+    private store = inject(Store);
 
-    static getRandomCompetitor(): Competitor {
+    /**
+     * Generates a random competitor with predefined attributes such as name, belt, and weight.
+     *
+     * @return {CompetitorCreateRequest} An object representing a randomly generated competitor, including name, belt,
+     *     and weight properties.
+     */
+    static getRandomCompetitor(): CompetitorCreateRequest {
         return {
             name: this.generateRandomString(10),
             belt: this.getRandomBelt(),
@@ -17,6 +26,12 @@ export class CompetitorService {
         }
     }
 
+    /**
+     * Generates a random string containing alphanumeric characters of specified length.
+     *
+     * @param {number} length - The length of the random string to generate.
+     * @return {string} A randomly generated string of the specified length.
+     */
     private static generateRandomString(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let result = '';
@@ -29,18 +44,22 @@ export class CompetitorService {
         return result;
     }
 
+    /**
+     * Generates a random weight value within a specified range.
+     *
+     * @return {number} A random integer representing a weight value between 50 and 120 inclusive.
+     */
     private static getRandomWeight(): number {
         return Math.floor(Math.random() * (120 - 50 + 1)) + 50;
     }
 
-    private static getRandomBelt(): 'white' | 'blue' | 'purple' | 'brown' | 'black' {
-        const belts: Array<'white' | 'blue' | 'purple' | 'brown' | 'black'> = [
-            'white',
-            'blue',
-            'purple',
-            'brown',
-            'black',
-        ];
+    /**
+     * Selects a random BeltColor from the predefined list of belt colors.
+     *
+     * @return {BeltColor} A randomly selected belt color.
+     */
+    private static getRandomBelt(): BeltColor {
+        const belts: BeltColor[] = [BeltColor.White, BeltColor.Blue, BeltColor.Purple, BeltColor.Brown];
         const randomIndex = Math.floor(Math.random() * belts.length);
         return belts[randomIndex];
     }
@@ -59,7 +78,7 @@ export class CompetitorService {
         if (id) {
             const competitor = this.competitors.find(competitor => competitor.id === id);
             if (competitor) {
-                return of(competitor);
+                return of(JSON.parse(JSON.stringify(competitor)));
             } else {
                 return throwError(() => new Error(`Competitor with id ${id} not found`));
             }
@@ -69,17 +88,20 @@ export class CompetitorService {
     }
 
     /**
-     * Creates a new competitor and adds it to the list of competitors if it does not already exist.
+     * Creates a new competitor and adds it to the competitors list.
      *
-     * @param {Competitor} competitor - The competitor object to be added.
-     * @return {Observable<Competitor>} An observable of the added competitor, or an error if the competitor already
-     *     exists.
+     * @param {CompetitorCreateRequest} competitor - The competitor creation request containing information for the new
+     *     competitor.
+     * @return {Observable<Competitor>} An observable that emits the newly created competitor.
      */
-    create(competitor: Competitor): Observable<Competitor> {
+    create(competitor: CompetitorCreateRequest): Observable<Competitor> {
+        // ID creation simulation
         const nextId = (this.competitors.slice().sort((a, b) => b.id! - a.id!)[0]?.id ?? -1) + 1;
+        const newCompetitor = {...competitor, id: nextId};
 
-        this.competitors.push({...competitor, id: nextId});
-        return of(competitor);
+        this.competitors = [...this.competitors, newCompetitor];
+        this.store.dispatch(loadCompetitors());
+        return of(newCompetitor);
     }
 
     /**
@@ -94,7 +116,11 @@ export class CompetitorService {
         let competitorIndex = this.findCompetitorIndexById(competitor.id);
 
         if (competitorIndex > -1) {
-            this.competitors[competitorIndex] = {...competitor};
+            const copy = this.competitors.slice();
+            copy[competitorIndex] = {...competitor};
+            this.competitors = [...copy];
+            this.store.dispatch(loadCompetitors());
+
             return of(this.competitors[competitorIndex]);
         }
 
@@ -112,7 +138,9 @@ export class CompetitorService {
         let competitorIndex = this.findCompetitorIndexById(competitorId);
 
         if (competitorIndex > -1) {
-            this.competitors.splice(competitorIndex, 1);
+            this.competitors = [...this.competitors.slice().filter(c => c.id !== competitorId)];
+
+            this.store.dispatch(loadCompetitors());
             return of();
         }
 

@@ -1,8 +1,17 @@
-export class Competitor {
+export interface CompetitorCreateRequest {
+    name: string;
+    weight: number;
+    belt: BeltColor;
+}
 
-    constructor(public name: string,
-                public weight: number,
-                public belt: 'white' | 'blue' | 'purple' | 'brown' | 'black',
-                public id?: number) {
-    }
+export interface Competitor extends CompetitorCreateRequest {
+    id: number;
+}
+
+export enum BeltColor {
+    White = 'white',
+    Blue = 'blue',
+    Purple = 'purple',
+    Brown = 'brown',
+    Black = 'black'
 }
