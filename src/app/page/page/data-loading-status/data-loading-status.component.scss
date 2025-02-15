@@ -1,0 +1,16 @@
+.wrapper {
+    height: 24px;
+
+    div {
+        width: 100%;
+        text-align: center;
+
+        &.status {
+            color: #939393;
+        }
+
+        &.error {
+            color: red;
+        }
+    }
+}

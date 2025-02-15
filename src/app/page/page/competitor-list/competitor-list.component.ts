@@ -3,7 +3,7 @@ import {AsyncPipe} from "@angular/common";
 import {Store} from "@ngrx/store";
 import {CompetitorService} from "../../../competitor/competitor.service";
 import {selectAllCompetitors} from "../../../state/competitor/competitor.selectors";
-import {loadCompetitors} from "../../../state/competitor/competitor.actions";
+import {deleteCompetitor, loadCompetitors, updateCompetitor} from "../../../state/competitor/competitor.actions";
 import {Competitor} from "../../../competitor/competitor";
 
 @Component({
@@ -18,17 +18,21 @@ export class CompetitorListComponent implements OnInit {
 
     private store = inject(Store);
     competitors$ = this.store.select(selectAllCompetitors);
-    private competitorSvc = inject(CompetitorService);
 
     ngOnInit() {
         this.store.dispatch(loadCompetitors());
     }
 
     deleteCompetitor(competitor: Competitor) {
-        this.competitorSvc.delete(competitor.id!);
+        this.store.dispatch(deleteCompetitor({competitor: competitor}));
     }
 
     updateCompetitor(competitor: Competitor) {
-        this.competitorSvc.update({...CompetitorService.getRandomCompetitor(), id: competitor.id});
+        this.store.dispatch(updateCompetitor({
+            competitor: {
+                ...CompetitorService.getRandomCompetitor(),
+                id: competitor.id
+            }
+        }))
     }
 }

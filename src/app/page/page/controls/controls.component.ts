@@ -1,5 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CompetitorService} from "../../../competitor/competitor.service";
+import {Store} from "@ngrx/store";
+import {addCompetitor} from "../../../state/competitor/competitor.actions";
 
 @Component({
     selector: 'app-controls',
@@ -9,9 +11,9 @@ import {CompetitorService} from "../../../competitor/competitor.service";
 })
 export class ControlsComponent {
 
-    private competitorSvc = inject(CompetitorService);
+    private store = inject(Store);
 
     createRandomCompetitor() {
-        this.competitorSvc.create(CompetitorService.getRandomCompetitor());
+        this.store.dispatch(addCompetitor({competitor: CompetitorService.getRandomCompetitor()}));
     }
 }

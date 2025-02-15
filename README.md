@@ -4,4 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Purpose
 
-Demonstrate NgRx and Firebase usage.
+Practice few of common tasks and workflows:
+
+* NgRx
+* Firebase
+* Optimistic UI

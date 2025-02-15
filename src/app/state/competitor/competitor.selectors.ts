@@ -8,12 +8,12 @@ export const selectAllCompetitors = createSelector(
     (state) => state.competitors
 );
 
-export const selectLoadCompetitorsStatus = createSelector(
+export const selectCompetitorStatus = createSelector(
     selectCompetitorState,
     (state) => state.status
 )
 
-export const selectLoadCompetitorsError = createSelector(
+export const selectCompetitorError = createSelector(
     selectCompetitorState,
     (state) => state.error
 )

@@ -1,8 +1,6 @@
-import {inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BeltColor, Competitor, CompetitorCreateRequest} from './competitor';
 import {Observable, of, throwError} from 'rxjs';
-import {Store} from "@ngrx/store";
-import {loadCompetitors} from "../state/competitor/competitor.actions";
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +8,6 @@ import {loadCompetitors} from "../state/competitor/competitor.actions";
 export class CompetitorService {
 
     competitors: Competitor[] = [];
-    private store = inject(Store);
 
     /**
      * Generates a random competitor with predefined attributes such as name, belt, and weight.
@@ -19,11 +16,7 @@ export class CompetitorService {
      *     and weight properties.
      */
     static getRandomCompetitor(): CompetitorCreateRequest {
-        return {
-            name: this.generateRandomString(10),
-            belt: this.getRandomBelt(),
-            weight: this.getRandomWeight()
-        }
+        return new CompetitorCreateRequest(this.generateRandomString(10), this.getRandomWeight(), this.getRandomBelt());
     }
 
     /**
@@ -96,12 +89,12 @@ export class CompetitorService {
      * @return {Observable<Competitor>} An observable that emits the newly created competitor.
      */
     create(competitor: CompetitorCreateRequest): Observable<Competitor> {
+
         // ID creation simulation
         const nextId = (this.competitors.slice().sort((a, b) => b.id! - a.id!)[0]?.id ?? -1) + 1;
         const newCompetitor = {...competitor, id: nextId};
 
         this.competitors = [...this.competitors, newCompetitor];
-        this.store.dispatch(loadCompetitors());
         return of(newCompetitor);
     }
 
@@ -120,7 +113,6 @@ export class CompetitorService {
             const copy = this.competitors.slice();
             copy[competitorIndex] = {...competitor};
             this.competitors = [...copy];
-            this.store.dispatch(loadCompetitors());
 
             return of(this.competitors[competitorIndex]);
         }
@@ -135,14 +127,13 @@ export class CompetitorService {
      * @return {Observable<void>} An observable that completes if the deletion is successful,
      * or throws an error if the competitor with the given ID is not found.
      */
-    delete(competitorId: number): Observable<void> {
+    delete(competitorId: number): Observable<boolean> {
         let competitorIndex = this.findCompetitorIndexById(competitorId);
 
         if (competitorIndex > -1) {
             this.competitors = [...this.competitors.slice().filter(c => c.id !== competitorId)];
 
-            this.store.dispatch(loadCompetitors());
-            return of();
+            return of(true);
         }
 
         return throwError(() => new Error(`Competitor with id ${competitorId} not found`));
