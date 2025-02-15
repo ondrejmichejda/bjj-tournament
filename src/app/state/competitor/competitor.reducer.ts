@@ -1,16 +1,13 @@
 import {Competitor} from '../../competitor/competitor';
 import {
     addCompetitor,
-    addCompetitorFailed,
     addCompetitorSuccess,
     deleteCompetitor,
-    deleteCompetitorFailed,
     deleteCompetitorSuccess,
     loadCompetitors,
     loadCompetitorsFailed,
     loadCompetitorsSuccess,
     updateCompetitor,
-    updateCompetitorFailed,
     updateCompetitorSuccess
 } from './competitor.actions';
 import {createReducer, on} from '@ngrx/store';
@@ -72,12 +69,6 @@ export const competitorReducer = createReducer(
             status: Status.Success,
         }
     )),
-    on(addCompetitorFailed, (state, {error}) => (
-        {
-            ...state,
-            error: error
-        }
-    )),
     on(updateCompetitor, (state, {competitor}) => (
         {
             ...state,
@@ -93,12 +84,6 @@ export const competitorReducer = createReducer(
             status: Status.Success,
         }
     )),
-    on(updateCompetitorFailed, (state, {error}) => (
-        {
-            ...state,
-            error: error
-        }
-    )),
     on(deleteCompetitor, (state, {competitor}) => (
         {
             ...state,
@@ -110,12 +95,6 @@ export const competitorReducer = createReducer(
         {
             ...state,
             status: Status.Success,
-        }
-    )),
-    on(deleteCompetitorFailed, (state, {error}) => (
-        {
-            ...state,
-            error: error
         }
     ))
 );

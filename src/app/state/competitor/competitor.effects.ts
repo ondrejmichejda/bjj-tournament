@@ -1,15 +1,13 @@
 import {inject, Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {
-    addCompetitorFailed,
     addCompetitorSuccess,
+    changeCompetitorFailure,
     CompetitorActions,
-    deleteCompetitorFailed,
     deleteCompetitorSuccess,
     loadCompetitors,
     loadCompetitorsFailed,
     loadCompetitorsSuccess,
-    updateCompetitorFailed,
     updateCompetitorSuccess
 } from "./competitor.actions";
 import {catchError, delay, map, mergeMap, of, tap} from "rxjs";
@@ -21,24 +19,13 @@ import {AlertService} from "../../service/alert.service";
 export class CompetitorEffects {
 
     private actions$ = inject(Actions);
-    afterAddCompetitorFailed$ = createEffect(() =>
+    afterFailed = createEffect(() =>
         this.actions$.pipe(
-            ofType(CompetitorActions.addCompetitorFailure),
+            ofType(CompetitorActions.changeCompetitorFailure),
             map(() => loadCompetitors())
         )
     )
-    afterUpdateFailedCompetitor$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(CompetitorActions.updateCompetitorFailure),
-            map(() => loadCompetitors())
-        )
-    )
-    afterDeleteFailedCompetitor$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(CompetitorActions.deleteCompetitorFailure),
-            map(() => loadCompetitors())
-        )
-    )
+
     private competitorSvc = inject(CompetitorService);
     loadCompetitors$ = createEffect(() =>
         this.actions$.pipe(
@@ -56,7 +43,6 @@ export class CompetitorEffects {
             )
         )
     );
-    private alertSvc = inject(AlertService);
     addCompetitor$ = createEffect(() =>
         this.actions$.pipe(
             ofType(CompetitorActions.addCompetitor),
@@ -64,12 +50,7 @@ export class CompetitorEffects {
                 this.competitorSvc.create(action.competitor).pipe(
                     delay(randomDelay()),
                     map(competitor => addCompetitorSuccess({competitor: competitor})),
-                    catchError(error => of(addCompetitorFailed({error: error.message}))
-                        .pipe(delay(randomDelay()),
-                            tap(() => {
-                                this.alertSvc.error();
-                            }))
-                    )
+                    catchError(error => of(changeCompetitorFailure({error: error.message})))
                 )
             )
         )
@@ -81,12 +62,7 @@ export class CompetitorEffects {
                 this.competitorSvc.update(action.competitor).pipe(
                     delay(randomDelay()),
                     map(competitor => updateCompetitorSuccess({competitor: competitor})),
-                    catchError(error => of(updateCompetitorFailed({error: error.message}))
-                        .pipe(delay(randomDelay()),
-                            tap(() => {
-                                this.alertSvc.error();
-                            }))
-                    )
+                    catchError(error => of(changeCompetitorFailure({error: error.message})))
                 )
             )
         )
@@ -98,15 +74,21 @@ export class CompetitorEffects {
                 this.competitorSvc.delete(action.competitor.id).pipe(
                     delay(randomDelay()),
                     map(() => deleteCompetitorSuccess()),
-                    catchError(error => of(deleteCompetitorFailed({error: error.message}))
-                        .pipe(delay(randomDelay()),
-                            tap(() => {
-                                this.alertSvc.error();
-                            }))
-                    )
+                    catchError(error => of(changeCompetitorFailure({error: error.message})))
                 )
             )
         )
+    )
+    private alertSvc = inject(AlertService);
+    changeCompetitorFailed$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(CompetitorActions.changeCompetitorFailure),
+                tap(action => {
+                    this.alertSvc.error(action.error);
+                    return of();
+                })
+            ),
+        {dispatch: false}
     )
 }
 

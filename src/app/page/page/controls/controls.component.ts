@@ -13,7 +13,14 @@ export class ControlsComponent {
 
     private store = inject(Store);
 
-    createRandomCompetitor() {
+    /**
+     * Creates a random competitor and adds it to the store.
+     * This method dispatches an action to add a competitor with randomly generated data
+     * by utilizing the CompetitorService's functionality.
+     *
+     * @return {void} Does not return a value.
+     */
+    createRandomCompetitor(): void {
         this.store.dispatch(addCompetitor({competitor: CompetitorService.getRandomCompetitor()}));
     }
 }

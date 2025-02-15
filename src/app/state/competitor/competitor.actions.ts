@@ -2,19 +2,16 @@ import {createAction, props} from '@ngrx/store';
 import {Competitor, CompetitorCreateRequest} from "../../competitor/competitor";
 
 /**
- * Enumeration representing different actions related to competitors.
+ * Represents the set of actions that can be performed on competitors.
+ * This enum defines the various states and outcomes of operations
+ * related to loading, adding, updating, and deleting competitors.
  *
- * The `CompetitorActions` enum defines various states and interactions
- * that can be performed, such as loading, adding competitors as well as handling
- * their success or failure outcomes.
- *
- * Members:
- * - `loadCompetitors`: Action for initiating the loading of competitor data.
- * - `loadCompetitorsSuccess`: Action triggered when competitor data is successfully loaded.
- * - `loadCompetitorsFailure`: Action triggered when there is an error in loading competitor data.
- * - `addCompetitor`: Action for initiating the addition of a new competitor.
- * - `addCompetitorSuccess`: Action triggered when a new competitor is successfully added.
- * - `addCompetitorFailure`: Action triggered when there is an error in adding a competitor.
+ * Actions are categorized as:
+ * - Load operations: Fetch competitors data from a source.
+ * - Add operations: Add a new competitor to the collection.
+ * - Update operations: Update details of an existing competitor.
+ * - Delete operations: Remove a competitor from the collection.
+ * - General failure: Captures errors related to create, update, and delete operations.
  */
 export enum CompetitorActions {
     // load data
@@ -24,15 +21,14 @@ export enum CompetitorActions {
     // add
     addCompetitor = '[Competitor] Add Competitor',
     addCompetitorSuccess = '[Competitor] Add Competitor Success',
-    addCompetitorFailure = '[Competitor] Add Competitor Failure',
     // update
     updateCompetitor = '[Competitor] Update Competitor',
     updateCompetitorSuccess = '[Competitor] Update Competitor Success',
-    updateCompetitorFailure = '[Competitor] Update Competitor Failure',
     // delete
     deleteCompetitor = '[Competitor] Delete Competitor',
     deleteCompetitorSuccess = '[Competitor] Delete Competitor Success',
-    deleteCompetitorFailure = '[Competitor] Delete Competitor Failure',
+    // general failure create, update, delete
+    changeCompetitorFailure = '[Competitor] Change Competitor Failure',
 }
 
 // get all
@@ -55,10 +51,6 @@ export const addCompetitorSuccess = createAction(
     CompetitorActions.addCompetitorSuccess,
     props<{ competitor: Competitor }>()
 );
-export const addCompetitorFailed = createAction(
-    CompetitorActions.addCompetitorFailure,
-    props<{ error: string }>()
-);
 
 // update
 export const updateCompetitor = createAction(
@@ -69,10 +61,6 @@ export const updateCompetitorSuccess = createAction(
     CompetitorActions.updateCompetitorSuccess,
     props<{ competitor: Competitor }>()
 );
-export const updateCompetitorFailed = createAction(
-    CompetitorActions.updateCompetitorFailure,
-    props<{ error: string }>()
-);
 
 // delete
 export const deleteCompetitor = createAction(
@@ -82,7 +70,9 @@ export const deleteCompetitor = createAction(
 export const deleteCompetitorSuccess = createAction(
     CompetitorActions.deleteCompetitorSuccess
 );
-export const deleteCompetitorFailed = createAction(
-    CompetitorActions.deleteCompetitorFailure,
+
+// general failure
+export const changeCompetitorFailure = createAction(
+    CompetitorActions.changeCompetitorFailure,
     props<{ error: string }>()
-);
+)

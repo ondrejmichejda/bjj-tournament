@@ -11,9 +11,15 @@ export class AlertService {
     constructor() {
     }
 
-    error() {
+    /**
+     * Displays an error message using the matSnackBar service.
+     *
+     * @param {string} msg - The error message to display.
+     * @return {void} This method does not return a value.
+     */
+    error(msg: string): void {
         this.matSnackBar.open(
-            'Vyskytla sa chyba.',
+            msg,
             'Zavřít',
             {
                 duration: 1000,
