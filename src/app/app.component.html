@@ -1,15 +1,1 @@
-<h1>BJJ Tournament</h1>
-
-<button (click)="createRandomCompetitor()">Create random</button>
-
-<div class="competitor-list">
-    @for (competitor of (competitors$ | async); track competitor.id) {
-        <div class="competitor">
-            <div>{{ competitor.id }}</div>
-            <div>{{ competitor.name }}</div>
-            <div>{{ competitor.belt }}</div>
-            <button (click)="deleteCompetitor(competitor)">Delete</button>
-            <button (click)="updateCompetitor(competitor)">Update</button>
-        </div>
-    }
-</div>
+<app-page></app-page>

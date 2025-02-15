@@ -1,0 +1,6 @@
+<span>{{ status$ | async }}</span>
+<div style="height: 4px">
+    @if ((status$ | async) == Status.Loading || (status$ | async) == Status.Pending) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+</div>

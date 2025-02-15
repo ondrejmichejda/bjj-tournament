@@ -3,10 +3,10 @@ import {loadCompetitors, loadCompetitorsFailed, loadCompetitorsSuccess} from './
 import {createReducer, on} from '@ngrx/store';
 
 export enum Status {
-    Pending,
-    Loading,
-    Error,
-    Success
+    Pending = 'Pending',
+    Loading = 'Loading',
+    Error = 'Error',
+    Success = 'Success'
 }
 
 export interface CompetitorState {
@@ -23,20 +23,29 @@ export const initialState: CompetitorState = {
 
 export const competitorReducer = createReducer(
     initialState,
-    on(loadCompetitors, (state) => ({
-        ...state,
-        error: null,
-        status: Status.Loading,
-    })),
-    on(loadCompetitorsSuccess, (state, {competitors}) => ({
-        ...state,
-        competitors: competitors,
-        status: Status.Success,
-        error: null
-    })),
-    on(loadCompetitorsFailed, (state, {error}) => ({
-        ...state,
-        status: Status.Error,
-        error: error,
-    }))
+    on(loadCompetitors, (state) => {
+        // console.log('on loadCompetitors');
+        return ({
+            ...state,
+            error: null,
+            status: Status.Loading,
+        })
+    }),
+    on(loadCompetitorsSuccess, (state, {competitors}) => {
+        // console.log('on loadCompetitorsSuccess');
+        return ({
+            ...state,
+            competitors: competitors,
+            status: Status.Success,
+            error: null
+        })
+    }),
+    on(loadCompetitorsFailed, (state, {error}) => {
+        // console.log('on loadCompetitorsFailed');
+        return ({
+            ...state,
+            status: Status.Error,
+            error: error,
+        })
+    })
 );

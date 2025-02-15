@@ -75,6 +75,7 @@ export class CompetitorService {
      *                                                  If the specified ID does not exist, an error is thrown.
      */
     get(id?: number): Observable<Competitor | Competitor[]> {
+        console.log('api requested')
         if (id) {
             const competitor = this.competitors.find(competitor => competitor.id === id);
             if (competitor) {

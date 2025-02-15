@@ -1,0 +1,11 @@
+<div class="competitor-list">
+    @for (competitor of (competitors$ | async); track competitor.id) {
+        <div class="competitor">
+            <div>{{ competitor.id }}</div>
+            <div>{{ competitor.name }}</div>
+            <div>{{ competitor.belt }}</div>
+            <button (click)="deleteCompetitor(competitor)">Delete</button>
+            <button (click)="updateCompetitor(competitor)">Update</button>
+        </div>
+    }
+</div>
