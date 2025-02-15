@@ -6,8 +6,10 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import {provideStore} from '@ngrx/store';
-import {competitorReducer} from "./state/competitors/competitor.reducer";
+import {competitorReducer} from "./state/competitor/competitor.reducer";
 import {provideEffects} from '@ngrx/effects';
+import {CompetitorEffects} from "./state/competitor/competitor.effects";
+import {environment} from "../environments/environment";
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -15,17 +17,17 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideAnimationsAsync(),
         provideFirebaseApp(() => initializeApp({
-            "projectId": "bjjtournament-4538b",
-            "appId": "1:1012794337509:web:8cf044ab0853b812460c0c",
-            "storageBucket": "bjjtournament-4538b.firebasestorage.app",
-            "apiKey": "AIzaSyBLTBSPgxF_PWyzQpIOGb5Uu9Ggs-IO3Ss",
-            "authDomain": "bjjtournament-4538b.firebaseapp.com",
-            "messagingSenderId": "1012794337509"
+            "projectId": `${environment.firestore.projectId}`,
+            "appId": `${environment.firestore.appId}`,
+            "storageBucket": `${environment.firestore.storageBucket}`,
+            "apiKey": `${environment.firestore.apiKey}`,
+            "authDomain": `${environment.firestore.authDomain}`,
+            "messagingSenderId": `${environment.firestore.messagingSenderId}`,
         })),
         provideFirestore(() => getFirestore()),
         provideStore({
             competitors: competitorReducer
         }),
-        provideEffects()
+        provideEffects(CompetitorEffects)
     ]
 };
