@@ -57,7 +57,7 @@ export const competitorReducer = createReducer(
     on(addCompetitor, (state, {competitor}) => (
         {
             ...state,
-            competitors: [...state.competitors, {...competitor, id: 0, pending: true}],
+            competitors: [...state.competitors, {...competitor, id: "undefined", pending: true}],
             status: Status.Loading,
         })
     ),

@@ -2,8 +2,8 @@
     @for (competitor of (competitors$ | async); track competitor) {
         <div class="competitor"
              [class.pending]="competitor.pending">
-            <!--            <div>{{ competitor.uid }}</div>-->
-            <!--            <div>{{ competitor.id }}</div>-->
+            <div>{{ competitor.uid }}</div>
+            <div>{{ competitor.id }}</div>
             <div>{{ competitor.name }}</div>
             <div>{{ competitor.belt }}</div>
             <button (click)="deleteCompetitor(competitor)">Delete</button>

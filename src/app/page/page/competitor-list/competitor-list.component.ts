@@ -5,6 +5,7 @@ import {CompetitorService} from "../../../competitor/competitor.service";
 import {selectAllCompetitors} from "../../../state/competitor/competitor.selectors";
 import {deleteCompetitor, loadCompetitors, updateCompetitor} from "../../../state/competitor/competitor.actions";
 import {Competitor} from "../../../competitor/competitor";
+import {tap} from "rxjs";
 
 @Component({
     selector: 'app-competitor-list',
@@ -17,7 +18,11 @@ import {Competitor} from "../../../competitor/competitor";
 export class CompetitorListComponent implements OnInit {
 
     private store = inject(Store);
-    competitors$ = this.store.select(selectAllCompetitors);
+    competitors$ = this.store.select(selectAllCompetitors).pipe(
+        tap(data => {
+            console.log('new data', data);
+        })
+    );
 
     ngOnInit() {
         this.store.dispatch(loadCompetitors());
@@ -46,7 +51,8 @@ export class CompetitorListComponent implements OnInit {
         this.store.dispatch(updateCompetitor({
             competitor: {
                 ...CompetitorService.getRandomCompetitor(),
-                id: competitor.id
+                id: competitor.id,
+                uid: competitor.uid
             }
         }))
     }

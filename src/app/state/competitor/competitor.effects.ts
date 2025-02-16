@@ -31,7 +31,7 @@ export class CompetitorEffects {
         this.actions$.pipe(
             ofType(CompetitorActions.loadCompetitors),
             mergeMap(() =>
-                this.competitorSvc.get().pipe(
+                this.competitorSvc.getAll().pipe(
                     delay(randomDelay()),
                     map(competitors => loadCompetitorsSuccess({competitors: <Competitor[]>competitors})),
                     catchError(error => {

@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {Competitor, CompetitorCreateRequest} from "../../competitor/competitor";
+import {Competitor} from "../../competitor/competitor";
 
 /**
  * Represents the set of actions that can be performed on competitors.
@@ -45,7 +45,7 @@ export const loadCompetitorsFailed = createAction(
 // add new
 export const addCompetitor = createAction(
     CompetitorActions.addCompetitor,
-    props<{ competitor: CompetitorCreateRequest }>()
+    props<{ competitor: Competitor }>()
 );
 export const addCompetitorSuccess = createAction(
     CompetitorActions.addCompetitorSuccess,
