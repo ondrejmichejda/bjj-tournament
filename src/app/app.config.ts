@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
             'storageBucket': `${environment.firestore.storageBucket}`,
             'apiKey': `${environment.firestore.apiKey}`,
             'authDomain': `${environment.firestore.authDomain}`,
-            'messagingSenderId': `${environment.firestore.messagingSenderId}`,
+            'messagingSenderId': `${environment.firestore.messagingSenderId}`
         })),
         provideFirestore(() => getFirestore()),
         provideStore({

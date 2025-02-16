@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {BeltColor, Competitor} from './competitor';
-import {catchError, from, map, mergeMap, Observable, of} from 'rxjs';
+import {catchError, delay, from, map, Observable, of} from 'rxjs';
 import {
     addDoc,
     collection,
@@ -9,9 +9,11 @@ import {
     doc,
     Firestore,
     getDoc,
+    orderBy,
     updateDoc
 } from "@angular/fire/firestore";
 import {CompetitorFactory} from "./competitor-factory";
+import {query} from 'firebase/firestore';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +21,7 @@ import {CompetitorFactory} from "./competitor-factory";
 export class CompetitorService {
 
     private firestore = inject(Firestore);
-
+    private latency = 0;
 
     static getRandomCompetitor(): Competitor {
         return CompetitorFactory.create(this.generateRandomName(), this.getRandomWeight(), this.getRandomBelt());
@@ -45,44 +47,50 @@ export class CompetitorService {
         return belts[randomIndex];
     }
 
-    getAll(): Observable<Competitor[]> {
+    loadItems(): Observable<Competitor[]> {
         const competitorsRef = collection(this.firestore, 'competitors');
-        return collectionData(competitorsRef, {idField: 'id'}) as Observable<Competitor[]>;
-    }
-
-    getOne(id: string): Observable<Competitor> {
-        const competitorDocRef = doc(this.firestore, `competitors/${id}`);
-        return from(getDoc(competitorDocRef)).pipe(
-            map(doc => doc.data() as Competitor)
+        const competitorsQuery = query(competitorsRef, orderBy('created', 'asc'));
+        return (collectionData(competitorsQuery, {idField: 'id'}) as Observable<Competitor[]>).pipe(
+            delay(this.latency)
         );
     }
 
-    create(competitor: Competitor): Observable<Competitor> {
-        const competitors = collection(this.firestore, 'competitors');
-        return from(addDoc(competitors, competitor)).pipe(
-            map(docSnap => {
-                console.log(docSnap);
-                return competitor;
+
+    loadItem(id: string): Observable<Competitor> {
+        const competitorDocRef = doc(this.firestore, `competitors/${id}`);
+        return from(getDoc(competitorDocRef)).pipe(
+            delay(this.latency),
+            map(doc => {
+                return {
+                    ...<Competitor>doc.data(),
+                    id: doc.id
+                }
             })
         );
     }
 
-    update(competitor: Competitor): Observable<Competitor> {
+    createItem(competitor: Competitor): Observable<string> {
+        const competitors = collection(this.firestore, 'competitors');
+        const data = CompetitorFactory.raw(competitor);
+        return from(addDoc(competitors, data)).pipe(
+            delay(this.latency),
+            map(doc => doc.id),
+        );
+    }
+
+    updateItem(competitor: Competitor): Observable<string> {
         const competitorDocRef = doc(this.firestore, `competitors/${competitor.id}`);
-        return from(updateDoc(competitorDocRef, {...competitor})).pipe(
-            mergeMap(() =>
-                this.getOne(competitor.id!).pipe(
-                    map(updatedCompetitor => <Competitor>updatedCompetitor)
-                )
-            )
+        return from(updateDoc(competitorDocRef, {...CompetitorFactory.raw(competitor)})).pipe(
+            map(() => competitor.id!)
         )
     }
 
-    delete(competitorId: number): Observable<boolean> {
-        const competitorDocRef = doc(this.firestore, `competitors/${competitorId}`);
+    deleteItem(id: string): Observable<string> {
+        const competitorDocRef = doc(this.firestore, `competitors/${id}`);
         return from(deleteDoc(competitorDocRef)).pipe(
-            map(() => true),
-            catchError(() => of(false))
+            delay(this.latency),
+            map(() => id),
+            catchError(() => of('-1'))
         )
     }
 }

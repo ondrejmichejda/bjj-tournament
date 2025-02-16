@@ -1,14 +1,12 @@
 import {Competitor} from '../../competitor/competitor';
 import {
     addCompetitor,
-    addCompetitorSuccess,
     deleteCompetitor,
     deleteCompetitorSuccess,
     loadCompetitors,
     loadCompetitorsFailed,
     loadCompetitorsSuccess,
-    updateCompetitor,
-    updateCompetitorSuccess
+    updateCompetitor
 } from './competitor.actions';
 import {createReducer, on} from '@ngrx/store';
 
@@ -21,12 +19,14 @@ export enum Status {
 
 export interface CompetitorState {
     competitors: Competitor[],
+    deleted: Competitor[],
     error: string | null,
     status: Status
 }
 
 export const initialState: CompetitorState = {
     competitors: [],
+    deleted: [],
     error: '',
     status: Status.Pending
 }
@@ -35,17 +35,34 @@ export const competitorReducer = createReducer(
     initialState,
     on(loadCompetitors, (state) => ({
             ...state,
+            competitors: state.competitors.map(c => {
+                return {...c, pending: true}
+            }),
             status: Status.Loading,
         })
     ),
-    on(loadCompetitorsSuccess, (state, {competitors}) => (
-        {
-            ...state,
-            competitors: competitors.map(c => {
-                return {...c, pending: false}
-            }),
-            status: Status.Success,
-        })
+    on(loadCompetitorsSuccess, (state, {competitors}) => {
+            /**
+             * Get server only values filtered from currently deleted items (in process of deletion)
+             */
+            const persistent = competitors
+                .map(c => {
+                    return {...c, pending: false}
+                })
+                .filter(c => !state.deleted.some(c2 => c2.id === c.id))
+            /**
+             * Get local state items only
+             */
+            const pending = state.competitors
+                .filter(c => c.pending && !competitors.some(c2 => c2.uid === c.uid));
+            return (
+                {
+                    ...state,
+                    competitors: [...persistent, ...pending],
+                    status: Status.Success,
+                }
+            )
+        }
     ),
     on(loadCompetitorsFailed, (state, {error}) => (
         {
@@ -61,14 +78,6 @@ export const competitorReducer = createReducer(
             status: Status.Loading,
         })
     ),
-    on(addCompetitorSuccess, (state, {competitor}) => (
-        {
-            ...state,
-            competitors: state.competitors.map(c => c.uid === competitor.uid ?
-                {...competitor, pending: false} : c),
-            status: Status.Success,
-        }
-    )),
     on(updateCompetitor, (state, {competitor}) => (
         {
             ...state,
@@ -76,25 +85,18 @@ export const competitorReducer = createReducer(
             status: Status.Loading,
         })
     ),
-    on(updateCompetitorSuccess, (state, {competitor}) => (
-        {
-            ...state,
-            competitors: state.competitors.map(c => c.id === competitor.id ?
-                {...competitor, pending: false} : c),
-            status: Status.Success,
-        }
-    )),
     on(deleteCompetitor, (state, {competitor}) => (
         {
             ...state,
             competitors: state.competitors.filter(c => c.id !== competitor.id),
             status: Status.Loading,
+            deleted: [...state.deleted, competitor]
         })
     ),
-    on(deleteCompetitorSuccess, (state) => (
+    on(deleteCompetitorSuccess, (state, {id}) => (
         {
             ...state,
-            status: Status.Success,
+            deleted: state.deleted.filter(c => c.id !== id)
         }
     ))
 );

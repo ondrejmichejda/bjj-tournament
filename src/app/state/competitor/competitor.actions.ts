@@ -49,7 +49,7 @@ export const addCompetitor = createAction(
 );
 export const addCompetitorSuccess = createAction(
     CompetitorActions.addCompetitorSuccess,
-    props<{ competitor: Competitor }>()
+    props<{ id: string }>()
 );
 
 // update
@@ -59,7 +59,7 @@ export const updateCompetitor = createAction(
 );
 export const updateCompetitorSuccess = createAction(
     CompetitorActions.updateCompetitorSuccess,
-    props<{ competitor: Competitor }>()
+    props<{ id: string }>()
 );
 
 // delete
@@ -68,7 +68,8 @@ export const deleteCompetitor = createAction(
     props<{ competitor: Competitor }>()
 );
 export const deleteCompetitorSuccess = createAction(
-    CompetitorActions.deleteCompetitorSuccess
+    CompetitorActions.deleteCompetitorSuccess,
+    props<{ id: string }>()
 );
 
 // general failure

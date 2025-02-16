@@ -23,4 +23,8 @@ export class ControlsComponent {
     createRandomCompetitor(): void {
         this.store.dispatch(addCompetitor({competitor: CompetitorService.getRandomCompetitor()}));
     }
+
+    clear(): void {
+
+    }
 }

@@ -5,12 +5,11 @@ import {
     changeCompetitorFailure,
     CompetitorActions,
     deleteCompetitorSuccess,
-    loadCompetitors,
     loadCompetitorsFailed,
     loadCompetitorsSuccess,
     updateCompetitorSuccess
 } from "./competitor.actions";
-import {catchError, delay, map, mergeMap, of, tap} from "rxjs";
+import {catchError, map, mergeMap, of, tap} from "rxjs";
 import {CompetitorService} from "../../competitor/competitor.service";
 import {Competitor} from "../../competitor/competitor";
 import {AlertService} from "../../service/alert.service";
@@ -19,26 +18,15 @@ import {AlertService} from "../../service/alert.service";
 export class CompetitorEffects {
 
     private actions$ = inject(Actions);
-    afterFailed = createEffect(() =>
-        this.actions$.pipe(
-            ofType(CompetitorActions.changeCompetitorFailure),
-            map(() => loadCompetitors())
-        )
-    )
 
     private competitorSvc = inject(CompetitorService);
     loadCompetitors$ = createEffect(() =>
         this.actions$.pipe(
             ofType(CompetitorActions.loadCompetitors),
             mergeMap(() =>
-                this.competitorSvc.getAll().pipe(
-                    delay(randomDelay()),
+                this.competitorSvc.loadItems().pipe(
                     map(competitors => loadCompetitorsSuccess({competitors: <Competitor[]>competitors})),
-                    catchError(error => {
-                        console.log(error);
-                        return of(loadCompetitorsFailed({error: error.message}))
-                            .pipe(delay(randomDelay()))
-                    })
+                    catchError(error => of(loadCompetitorsFailed({error: error.message})))
                 )
             )
         )
@@ -47,9 +35,8 @@ export class CompetitorEffects {
         this.actions$.pipe(
             ofType(CompetitorActions.addCompetitor),
             mergeMap(action =>
-                this.competitorSvc.create(action.competitor).pipe(
-                    delay(randomDelay()),
-                    map(competitor => addCompetitorSuccess({competitor: competitor})),
+                this.competitorSvc.createItem(action.competitor).pipe(
+                    map(competitor => addCompetitorSuccess({id: competitor})),
                     catchError(error => of(changeCompetitorFailure({error: error.message})))
                 )
             )
@@ -59,9 +46,8 @@ export class CompetitorEffects {
         this.actions$.pipe(
             ofType(CompetitorActions.updateCompetitor),
             mergeMap(action =>
-                this.competitorSvc.update(action.competitor).pipe(
-                    delay(randomDelay()),
-                    map(competitor => updateCompetitorSuccess({competitor: competitor})),
+                this.competitorSvc.updateItem(action.competitor).pipe(
+                    map(competitor => updateCompetitorSuccess({id: competitor})),
                     catchError(error => of(changeCompetitorFailure({error: error.message})))
                 )
             )
@@ -71,9 +57,8 @@ export class CompetitorEffects {
         this.actions$.pipe(
             ofType(CompetitorActions.deleteCompetitor),
             mergeMap(action =>
-                this.competitorSvc.delete(action.competitor.id).pipe(
-                    delay(randomDelay()),
-                    map(() => deleteCompetitorSuccess()),
+                this.competitorSvc.deleteItem(action.competitor.id).pipe(
+                    map(id => deleteCompetitorSuccess({id: id})),
                     catchError(error => of(changeCompetitorFailure({error: error.message})))
                 )
             )
@@ -91,5 +76,3 @@ export class CompetitorEffects {
         {dispatch: false}
     )
 }
-
-export const randomDelay = (max: number = 1000) => Math.floor(Math.random() * max);
