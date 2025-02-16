@@ -23,7 +23,7 @@ export class CompetitorListComponent implements OnInit {
     }
 
     /**
-     * Deletes a competitor from the store.
+     * Deletes a competitor from the store by dispatching the delete action.
      *
      * @param {Competitor} competitor - The competitor object to be deleted.
      * @return {void} No return value.
@@ -33,13 +33,10 @@ export class CompetitorListComponent implements OnInit {
     }
 
     /**
-     * Updates the details of an existing competitor with a new competitor object.
-     * Merges the provided competitor ID with a randomly generated competitor object.
-     * Dispatches the updateCompetitor action to the store with the updated competitor data.
+     * Updates the information of a competitor by dispatching an action to the store.
      *
-     * @param {Competitor} competitor - The competitor object containing the ID to update and any additional details to
-     *     utilize in the merge.
-     * @return {void} Does not return a value.
+     * @param {Competitor} competitor - The competitor object to be updated.
+     * @return {void} This method does not return a value.
      */
     updateCompetitor(competitor: Competitor): void {
         this.store.dispatch(updateCompetitor({

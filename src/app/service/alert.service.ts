@@ -8,9 +8,6 @@ export class AlertService {
 
     private matSnackBar = inject(MatSnackBar);
 
-    constructor() {
-    }
-
     /**
      * Displays an error message using the matSnackBar service.
      *
