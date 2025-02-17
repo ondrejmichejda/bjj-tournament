@@ -1,0 +1,9 @@
+<div class="wrapper">
+    @if (match().competitorA) {
+        <app-competitor [competitor]="match().competitorA!"></app-competitor>
+    }
+    <div style="font-size: 72px">X</div>
+    @if (match().competitorB) {
+        <app-competitor [competitor]="match().competitorB!"></app-competitor>
+    }
+</div>

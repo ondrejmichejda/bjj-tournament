@@ -35,3 +35,5 @@ export enum Status {
     Error = 'Error',
     Success = 'Success'
 }
+
+//todo: refactor ngrx to generics

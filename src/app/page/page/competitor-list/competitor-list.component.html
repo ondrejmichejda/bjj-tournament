@@ -1,13 +1,5 @@
 <div class="competitor-list">
     @for (competitor of (competitors$ | async); track competitor.uid) {
-        <span class="competitor"
-              [ngStyle]="{'color': competitor.belt}"
-              [class.pending]="competitor.pending">
-<!--            <div>{{ competitor.id }}</div>-->
-            <span>{{ competitor.name }}</span>
-            <!--            <div>{{ competitor.belt }}</div>-->
-            <button (click)="deleteCompetitor(competitor)">delete</button>
-            <button (click)="updateCompetitor(competitor)">update</button>
-        </span>
+        <app-competitor [competitor]="competitor"></app-competitor>
     }
 </div>
