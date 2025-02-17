@@ -1,5 +1,8 @@
-import {CompetitorState} from './competitor/competitor.reducer';
+import {FirebaseState} from "../base/firebase-state";
+import {Competitor} from "../competitor/competitor";
+import {Match} from "../match/match";
 
 export interface AppState {
-    competitors: CompetitorState
+    competitors: FirebaseState<Competitor>,
+    matches: FirebaseState<Match>
 }

@@ -1,26 +1,26 @@
-import {Competitor} from '../../competitor/competitor';
-import {
-    addCompetitor,
-    deleteCompetitor,
-    deleteCompetitorSuccess,
-    loadCompetitors,
-    loadCompetitorsFailed,
-    loadCompetitorsSuccess,
-    updateCompetitor
-} from './competitor.actions';
 import {createReducer, on} from '@ngrx/store';
 import {FirebaseState, Status} from "../../base/firebase-state";
+import {Match} from "../../match/match";
+import {
+    addMatch,
+    deleteMatch,
+    deleteMatchSuccess,
+    loadMatches,
+    loadMatchesFailed,
+    loadMatchesSuccess,
+    updateMatch
+} from "./match.actions";
 
-export const initialState: FirebaseState<Competitor> = {
+export const initialState: FirebaseState<Match> = {
     items: [],
     deleted: [],
     error: '',
     status: Status.Pending
 }
 
-export const competitorReducer = createReducer(
+export const matchReducer = createReducer(
     initialState,
-    on(loadCompetitors, (state) => ({
+    on(loadMatches, (state) => ({
             ...state,
             items: state.items.map(c => {
                 return {...c, pending: true}
@@ -28,11 +28,11 @@ export const competitorReducer = createReducer(
             status: Status.Loading,
         })
     ),
-    on(loadCompetitorsSuccess, (state, {competitors}) => {
+    on(loadMatchesSuccess, (state, {matches}) => {
             /**
              * Get server only values filtered from currently deleted items (in process of deletion)
              */
-            const persistent = competitors
+            const persistent = matches
                 .map(c => {
                     return {...c, pending: false}
                 })
@@ -41,7 +41,7 @@ export const competitorReducer = createReducer(
              * Get local state items only
              */
             const pending = state.items
-                .filter(c => c.pending && !competitors.some(c2 => c2.uid === c.uid));
+                .filter(c => c.pending && !matches.some(c2 => c2.uid === c.uid));
             return (
                 {
                     ...state,
@@ -51,36 +51,36 @@ export const competitorReducer = createReducer(
             )
         }
     ),
-    on(loadCompetitorsFailed, (state, {error}) => (
+    on(loadMatchesFailed, (state, {error}) => (
         {
             ...state,
             status: Status.Error,
             error: error,
         })
     ),
-    on(addCompetitor, (state, {competitor}) => (
+    on(addMatch, (state, {match}) => (
         {
             ...state,
-            items: [...state.items, {...competitor, id: "undefined", pending: true}],
+            items: [...state.items, {...match, id: "undefined", pending: true}],
             status: Status.Loading,
         })
     ),
-    on(updateCompetitor, (state, {competitor}) => (
+    on(updateMatch, (state, {match}) => (
         {
             ...state,
-            items: state.items.map(c => c.id === competitor.id ? {...c, ...competitor, pending: true} : c),
+            items: state.items.map(c => c.id === match.id ? {...c, ...match, pending: true} : c),
             status: Status.Loading,
         })
     ),
-    on(deleteCompetitor, (state, {competitor}) => (
+    on(deleteMatch, (state, {match}) => (
         {
             ...state,
-            items: state.items.filter(c => c.id !== competitor.id),
+            items: state.items.filter(c => c.id !== match.id),
             status: Status.Loading,
-            deleted: [...state.deleted, competitor]
+            deleted: [...state.deleted, match]
         })
     ),
-    on(deleteCompetitorSuccess, (state, {id}) => (
+    on(deleteMatchSuccess, (state, {id}) => (
         {
             ...state,
             deleted: state.deleted.filter(c => c.id !== id)

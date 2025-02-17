@@ -10,7 +10,7 @@ import {
     orderBy,
     updateDoc
 } from "@angular/fire/firestore";
-import {delay, from, map, Observable, throwError} from "rxjs";
+import {delay, from, map, Observable, tap, throwError, zip} from "rxjs";
 import {query} from "firebase/firestore";
 
 /**
@@ -21,7 +21,7 @@ import {query} from "firebase/firestore";
  */
 export class FirebaseEntityService<T extends FirebaseEntity> {
 
-    private firestore = inject(Firestore);
+    protected firestore = inject(Firestore);
 
     /**
      * Represents the name of a collection.
@@ -30,8 +30,13 @@ export class FirebaseEntityService<T extends FirebaseEntity> {
      * Ensure the value assigned is a string and adheres to the naming conventions
      * relevant to its purpose.
      */
-    private readonly collectionName: string = '';
-
+    protected readonly collectionName: string = '';
+    /**
+     * Simulated latency.
+     *
+     * @type {number}
+     */
+    protected latency: number = 300;
     /**
      * A function used to transform an input of type T into a desired output format.
      *
@@ -47,18 +52,10 @@ export class FirebaseEntityService<T extends FirebaseEntity> {
     private readonly transformFn?: (item: T) => {};
 
     /**
-     * Simulated latency.
-     *
-     * @type {number}
-     */
-    private latency = 0;
-
-    /**
      * Constructs an instance with the specified collection name and an optional transformation function.
      *
      * @param {string} collection - The name of the collection.
      * @param {(item: T) => {}=} transformFn - An optional function to transform items in the collection.
-     * @return {void}
      */
     constructor(collection: string,
                 transformFn?: (item: T) => {}) {
@@ -77,7 +74,8 @@ export class FirebaseEntityService<T extends FirebaseEntity> {
         const collectionRef = collection(this.firestore, this.collectionName);
         const collectionQuery = query(collectionRef, orderBy('created', 'asc'));
         return (collectionData(collectionQuery, {idField: 'id'}) as Observable<T[]>).pipe(
-            delay(this.latency)
+            delay(this.latency),
+            tap(items => console.log('loaded items', items))
         );
     }
 
@@ -143,6 +141,19 @@ export class FirebaseEntityService<T extends FirebaseEntity> {
         return from(deleteDoc(this.docRef(id))).pipe(
             delay(this.latency),
             map(() => id)
+        )
+    }
+
+    /**
+     * Deletes multiple items identified by their IDs in bulk.
+     *
+     * @param {string[]} ids - An array of IDs representing the items to be deleted.
+     * @return {Observable<boolean>} An Observable that emits `true` when all deletions complete successfully.
+     */
+    public deleteBulk(ids: string[]): Observable<boolean> {
+        const del$ = ids.map(id => this.deleteItem(id));
+        return zip(del$).pipe(
+            map(() => true)
         )
     }
 

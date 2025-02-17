@@ -64,6 +64,19 @@ export class CompetitorEffects {
             )
         )
     )
+    deleteCompetitorBulk$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(CompetitorActions.deleteCompetitorBulk),
+                tap(action =>
+                    this.competitorSvc.deleteBulk((<Competitor[]>action.competitors).map(c => c.id)).pipe(
+                        catchError(error => of(changeCompetitorFailure({error: error.message})))
+                    )
+                )
+            ),
+        {
+            dispatch: false
+        }
+    )
     private alertSvc = inject(AlertService);
     changeCompetitorFailed$ = createEffect(() =>
             this.actions$.pipe(

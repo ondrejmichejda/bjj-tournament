@@ -27,7 +27,7 @@ export class CompetitorFactory {
             name: competitor.name,
             weight: competitor.weight,
             belt: competitor.belt,
-            create: competitor.created
+            created: competitor.created
         }
     }
 }

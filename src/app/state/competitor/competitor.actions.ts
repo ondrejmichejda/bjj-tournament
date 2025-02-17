@@ -26,6 +26,7 @@ export enum CompetitorActions {
     updateCompetitorSuccess = '[Competitor] Update Competitor Success',
     // delete
     deleteCompetitor = '[Competitor] Delete Competitor',
+    deleteCompetitorBulk = '[Competitor] Delete Competitor Bulk',
     deleteCompetitorSuccess = '[Competitor] Delete Competitor Success',
     // general failure create, update, delete
     changeCompetitorFailure = '[Competitor] Change Competitor Failure',
@@ -71,6 +72,10 @@ export const deleteCompetitorSuccess = createAction(
     CompetitorActions.deleteCompetitorSuccess,
     props<{ id: string }>()
 );
+export const deleteCompetitorBulk = createAction(
+    CompetitorActions.deleteCompetitorBulk,
+    props<{ competitors: Competitor[] }>()
+)
 
 // general failure
 export const changeCompetitorFailure = createAction(

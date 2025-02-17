@@ -10,6 +10,8 @@ import {competitorReducer} from "./state/competitor/competitor.reducer";
 import {provideEffects} from '@ngrx/effects';
 import {CompetitorEffects} from "./state/competitor/competitor.effects";
 import {environment} from "../environments/environment";
+import {matchReducer} from "./state/match/match.reducer";
+import {MatchEffects} from "./state/match/match.effects";
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -26,8 +28,9 @@ export const appConfig: ApplicationConfig = {
         })),
         provideFirestore(() => getFirestore()),
         provideStore({
-            competitors: competitorReducer
+            competitors: competitorReducer,
+            matches: matchReducer
         }),
-        provideEffects(CompetitorEffects)
+        provideEffects(CompetitorEffects, MatchEffects)
     ]
 };

@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {selectCompetitorError, selectCompetitorStatus} from "../../../state/competitor/competitor.selectors";
 import {AsyncPipe} from "@angular/common";
-import {Status} from "../../../state/competitor/competitor.reducer";
+import {Status} from '../../../base/firebase-state';
 
 @Component({
     selector: 'app-data-loading-status',

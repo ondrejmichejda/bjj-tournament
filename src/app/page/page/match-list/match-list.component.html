@@ -1,0 +1,8 @@
+<div class="wrapper">
+    @for (match of (matches$ | async); track match.uid) {
+        <p (click)="matchDetails(match)">{{ match.uid }} x {{ match.created }}</p>
+    }
+</div>
+
+
+

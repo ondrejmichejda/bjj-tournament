@@ -5,7 +5,7 @@ export const selectCompetitorState = (state: AppState) => state.competitors;
 
 export const selectAllCompetitors = createSelector(
     selectCompetitorState,
-    (state) => state.competitors
+    (state) => state.items
 );
 
 export const selectCompetitorStatus = createSelector(

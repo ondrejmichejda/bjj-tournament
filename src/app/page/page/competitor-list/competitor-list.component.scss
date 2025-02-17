@@ -1,7 +1,11 @@
 .competitor-list {
+    background-color: #939393;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    height: 400px;
+    overflow-y: auto;
+    padding: 8px;
 }
 
 .competitor {
@@ -9,7 +13,7 @@
     display: flex;
     flex-direction: row;
     gap: 4px;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 
     &.pending {
         color: #939393;

@@ -9,7 +9,7 @@ import {FirebaseEntityService} from "../base/firebase-entity.service";
 export class CompetitorService extends FirebaseEntityService<Competitor> {
 
     constructor() {
-        super('competitors');
+        super('competitors', CompetitorFactory.transformFn);
     }
 
     /**
