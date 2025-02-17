@@ -9,9 +9,9 @@ import {
     updateCompetitor
 } from './competitor.actions';
 import {createReducer, on} from '@ngrx/store';
-import {FirebaseState, Status} from "../../base/firebase-state";
+import {BaseState, Status} from "../../base/base-state";
 
-export const initialState: FirebaseState<Competitor> = {
+export const initialState: BaseState<Competitor> = {
     items: [],
     deleted: [],
     error: '',

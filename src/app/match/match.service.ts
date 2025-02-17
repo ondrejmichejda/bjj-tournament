@@ -29,6 +29,12 @@ export class MatchService extends FirebaseEntityService<Match> {
             );
     }
 
+    /**
+     * Loads a list of matches and enhances them with their corresponding competitors' details.
+     *
+     * @return {Observable<Match[]>} An observable emitting an array of matches, where each match contains additional
+     *     details about its competitors.
+     */
     override loadItems(): Observable<Match[]> {
         return combineLatest([super.loadItems(), this.store.select(selectAllCompetitors)]).pipe(
             map(([matches, competitors]) => {

@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {FirebaseState, Status} from "../../base/firebase-state";
+import {BaseState, Status} from "../../base/base-state";
 import {Match} from "../../match/match";
 import {
     addMatch,
@@ -11,7 +11,7 @@ import {
     updateMatch
 } from "./match.actions";
 
-export const initialState: FirebaseState<Match> = {
+export const initialState: BaseState<Match> = {
     items: [],
     deleted: [],
     error: '',

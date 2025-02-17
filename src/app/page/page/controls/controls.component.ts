@@ -42,6 +42,14 @@ export class ControlsComponent {
                 this.store.dispatch(deleteCompetitorBulk({competitors: competitors})));
     }
 
+    /**
+     * Creates and dispatches match data by calculating matches from the match service.
+     *
+     * The method uses a service to calculate matches and subsequently dispatches each match
+     * to the store using the 'addMatch' action.
+     *
+     * @return {void} This method does not return any value.
+     */
     createMatch(): void {
         // this.store.dispatch(addMatch({match: }));
         this.matchSvc.calculate().subscribe(matches => {
@@ -50,6 +58,12 @@ export class ControlsComponent {
     }
 
 
+    /**
+     * Clears all matches by selecting and retrieving the current matches
+     * and dispatching an action to delete them in bulk.
+     *
+     * @return {void} Does not return a value.
+     */
     clearMatches() {
         this.store.select(selectAllMatches)
             .pipe(take(1))

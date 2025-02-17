@@ -10,7 +10,7 @@ import {
     orderBy,
     updateDoc
 } from "@angular/fire/firestore";
-import {delay, from, map, Observable, tap, throwError, zip} from "rxjs";
+import {delay, from, map, Observable, throwError, zip} from "rxjs";
 import {query} from "firebase/firestore";
 
 /**
@@ -74,8 +74,7 @@ export class FirebaseEntityService<T extends FirebaseEntity> {
         const collectionRef = collection(this.firestore, this.collectionName);
         const collectionQuery = query(collectionRef, orderBy('created', 'asc'));
         return (collectionData(collectionQuery, {idField: 'id'}) as Observable<T[]>).pipe(
-            delay(this.latency),
-            tap(items => console.log('loaded items', items))
+            delay(this.latency)
         );
     }
 
