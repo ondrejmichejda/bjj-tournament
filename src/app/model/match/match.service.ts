@@ -1,9 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {Match} from './match';
-import {FirebaseEntityService} from "../base/firebase-entity.service";
+import {FirebaseEntityService} from "../../base/firebase-entity.service";
 import {Store} from "@ngrx/store";
 import {combineLatest, delay, from, map, Observable, take, throwError} from "rxjs";
-import {selectAllCompetitors} from "../state/competitor/competitor.selectors";
+import {selectAllCompetitors} from "../../state/competitor/competitor.selectors";
 import {MatchFactory} from "./match-factory";
 import {addDoc, collection, doc} from "@angular/fire/firestore";
 

@@ -3,8 +3,8 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 
 import {catchError, map, mergeMap, of, tap} from "rxjs";
 import {AlertService} from "../../service/alert.service";
-import {MatchService} from "../../match/match.service";
-import {Match} from "../../match/match";
+import {MatchService} from "../../model/match/match.service";
+import {Match} from "../../model/match/match";
 import {
     addMatchSuccess,
     changeMatchFailure,

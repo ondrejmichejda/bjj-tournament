@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {Match} from "../../../../match/match";
+import {Match} from "../../../../model/match/match";
 import {CompetitorComponent} from "../../competitor-list/competitor/competitor.component";
 
 @Component({

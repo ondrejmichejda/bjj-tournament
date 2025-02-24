@@ -1,10 +1,10 @@
 import {Component, inject} from '@angular/core';
-import {CompetitorService} from "../../../competitor/competitor.service";
+import {CompetitorService} from "../../../model/competitor/competitor.service";
 import {Store} from "@ngrx/store";
 import {addCompetitor, deleteCompetitorBulk} from "../../../state/competitor/competitor.actions";
 import {selectAllCompetitors} from "../../../state/competitor/competitor.selectors";
 import {take} from "rxjs";
-import {MatchService} from "../../../match/match.service";
+import {MatchService} from "../../../model/match/match.service";
 import {selectAllMatches} from "../../../state/match/match.selectors";
 import {addMatch, deleteMatchBulk} from "../../../state/match/match.actions";
 

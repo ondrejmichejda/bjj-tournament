@@ -10,8 +10,8 @@ import {
     updateCompetitorSuccess
 } from "./competitor.actions";
 import {catchError, map, mergeMap, of, tap} from "rxjs";
-import {CompetitorService} from "../../competitor/competitor.service";
-import {Competitor} from "../../competitor/competitor";
+import {CompetitorService} from "../../model/competitor/competitor.service";
+import {Competitor} from "../../model/competitor/competitor";
 import {AlertService} from "../../service/alert.service";
 
 @Injectable()

@@ -1,6 +1,6 @@
 import {createReducer, on} from '@ngrx/store';
 import {BaseState, Status} from "../../base/base-state";
-import {Match} from "../../match/match";
+import {Match} from "../../model/match/match";
 import {
     addMatch,
     deleteMatch,

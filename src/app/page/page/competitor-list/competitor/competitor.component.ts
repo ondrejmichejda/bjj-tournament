@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core';
-import {Competitor} from "../../../../competitor/competitor";
+import {Competitor} from "../../../../model/competitor/competitor";
 import {Store} from "@ngrx/store";
-import { deleteCompetitor, updateCompetitor } from '../../../../state/competitor/competitor.actions';
+import {deleteCompetitor, updateCompetitor} from '../../../../state/competitor/competitor.actions';
 
 @Component({
     selector: 'app-competitor',
@@ -10,8 +10,8 @@ import { deleteCompetitor, updateCompetitor } from '../../../../state/competitor
     styleUrl: './competitor.component.scss'
 })
 export class CompetitorComponent {
-    private store = inject(Store);
     competitor = input.required<Competitor>();
+    private store = inject(Store);
 
     deleteCompetitor(): void {
         this.store.dispatch(deleteCompetitor({competitor: this.competitor()}));

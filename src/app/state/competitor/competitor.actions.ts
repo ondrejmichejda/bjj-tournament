@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {Competitor} from "../../competitor/competitor";
+import {Competitor} from "../../model/competitor/competitor";
 
 /**
  * Represents the set of actions that can be performed on competitors.

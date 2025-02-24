@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {Match} from "../../match/match";
+import {Match} from "../../model/match/match";
 
 export enum MatchActions {
     // load data

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BeltColor, Competitor} from './competitor';
 import {CompetitorFactory} from "./competitor-factory";
-import {FirebaseEntityService} from "../base/firebase-entity.service";
+import {FirebaseEntityService} from "../../base/firebase-entity.service";
 
 @Injectable({
     providedIn: 'root'

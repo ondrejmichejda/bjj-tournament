@@ -1,4 +1,4 @@
-import {FirebaseEntity} from "../base/firebase-entity.service";
+import {FirebaseEntity} from "../../base/firebase-entity.service";
 import {Competitor} from "../competitor/competitor";
 
 export class Match extends FirebaseEntity {

@@ -1,4 +1,4 @@
-import {Competitor} from '../../competitor/competitor';
+import {Competitor} from '../../model/competitor/competitor';
 import {
     addCompetitor,
     deleteCompetitor,

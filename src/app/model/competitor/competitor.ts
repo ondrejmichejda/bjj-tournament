@@ -1,4 +1,4 @@
-import {FirebaseEntity} from "../base/firebase-entity.service";
+import {FirebaseEntity} from "../../base/firebase-entity.service";
 
 /**
  * Represents a competitor with a name, weight, and belt color.
