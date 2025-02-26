@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core';
-import {Competitor} from "../../../../model/competitor/competitor";
+import {Competitor} from "../../../model/competitor/competitor";
 import {Store} from "@ngrx/store";
-import {deleteCompetitor, updateCompetitor} from '../../../../state/competitor/competitor.actions';
+import {deleteCompetitor, updateCompetitor} from '../../../state/competitor/competitor.actions';
 
 @Component({
     selector: 'app-competitor',
